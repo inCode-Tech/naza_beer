@@ -21,8 +21,27 @@ export const Container = styled.div`
     border-bottom: 1px solid #ebecf0;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  header {
+    position: relative;
+    width: 100%;
+    text-align: center;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
+
+    .btn-logout {
+      all: unset;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      position: absolute;
+      top: 0.1rem;
+      right: 0rem;
+    }
   }
 
   .separator {

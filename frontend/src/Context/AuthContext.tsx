@@ -32,7 +32,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     async function loadStoragedDate() {
-      const storagedToken = localStorage.getItem('@SalutispepAuth:token');
+      const storagedToken = localStorage.getItem('@NazaBeerAuth:token');
 
       if (storagedToken) {
         setIsAuthenticated(true);
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (token != null) {
       setIsAuthenticated(true);
-      localStorage.setItem('@SalutispepAuth:token', token);
+      localStorage.setItem('@NazaBeerAuth:token', token);
       navigate('/perfis');
     }
 
@@ -55,11 +55,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
-    localStorage.removeItem('@SalutispepAuth:token');
-    localStorage.removeItem('@Salutispep:profile');
+    localStorage.removeItem('@NazaBeerAuth:token');
     setIsAuthenticated(false);
 
-    navigate('/');
+    navigate('/login');
   }
 
   function changeLoading(value: boolean) {

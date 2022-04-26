@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
 import 'react-toastify/dist/ReactToastify.css';
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
+import '@szhsin/react-menu/dist/theme-dark.css';
 
 export const GlobalStyles = createGlobalStyle`
   :root {
