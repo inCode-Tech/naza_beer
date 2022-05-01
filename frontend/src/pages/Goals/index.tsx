@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Container } from "./styles";
 
-import { Navbar } from "../../components/Navbar";
-
 import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../components/Footer";
