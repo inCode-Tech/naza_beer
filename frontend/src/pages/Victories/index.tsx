@@ -4,7 +4,12 @@ import { Container } from "./styles";
 
 import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
+import { MdOutlineDateRange } from "react-icons/md";
+
 import { Footer } from "../../components/Footer";
+import { DayPickerModal } from "../../components/Modals/DayPickerModal";
+
+import { format, isSaturday, previousSaturday } from 'date-fns';
 
 interface PlayerVictoriesProps {
   id: number;
@@ -66,8 +71,15 @@ const inititalPlayerVictories = [
   }
 ];
 
+function getInitialDay() {
+  const today = new Date();
+  return isSaturday(today) ? today : previousSaturday(today);
+}
+
 export function Victories() {
   const [playerVictories, setPlayerVictories] = useState<PlayerVictoriesProps[]>([]);
+  const [showDayPickerModal, setShowDayPickerModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
     setPlayerVictories(inititalPlayerVictories);
@@ -88,14 +100,32 @@ export function Victories() {
     setPlayerVictories(tempPlayerVictories);
   }
 
+  function closeModal() {
+    setShowDayPickerModal(false);
+  }
+
   return (
     <Container>
+      <DayPickerModal
+        showDayPickerModal={showDayPickerModal}
+        onRequestClose={closeModal}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+      />
       <div className="content">
         <header>
           <h1>
             <GiTrophy className="icon" />
             Vitórias
           </h1>
+
+          <button 
+            type="button"
+            onClick={() => setShowDayPickerModal(true)}
+          >
+            <MdOutlineDateRange className="icon" />
+            {selectedDay && format(selectedDay, 'dd/MM/y')}
+          </button>
         </header>
 
         <table>

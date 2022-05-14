@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 
 import { Container } from "./styles";
 
-import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
+import { MdOutlineExpandMore, MdOutlineExpandLess, MdOutlineDateRange } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../components/Footer";
+import { format, isSaturday, previousSaturday } from "date-fns";
+import { DayPickerModal } from "../../components/Modals/DayPickerModal";
 
 interface PlayerGoalsProps {
   id: number;
@@ -66,8 +68,15 @@ const inititalPlayerGoals = [
   }
 ];
 
+function getInitialDay() {
+  const today = new Date();
+  return isSaturday(today) ? today : previousSaturday(today);
+}
+
 export function Goals() {
   const [playerGoals, setPlayerGoals] = useState<PlayerGoalsProps[]>([]);
+  const [showDayPickerModal, setShowDayPickerModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
     setPlayerGoals(inititalPlayerGoals);
@@ -88,14 +97,32 @@ export function Goals() {
     setPlayerGoals(tempPlayerGoals);
   }
 
+  function closeModal() {
+    setShowDayPickerModal(false);
+  }
+
   return (
     <Container>
+      <DayPickerModal
+        showDayPickerModal={showDayPickerModal}
+        onRequestClose={closeModal}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+      />
       <div className="content">
         <header>
           <h1>
             <GiTrophy className="icon" />
             Gols
           </h1>
+
+          <button 
+            type="button"
+            onClick={() => setShowDayPickerModal(true)}
+          >
+            <MdOutlineDateRange className="icon" />
+            {selectedDay && format(selectedDay, 'dd/MM/y')}
+          </button>
         </header>
 
         <table>

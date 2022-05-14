@@ -32,6 +32,7 @@ export const Container = styled.div`
     header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 1rem 1.5rem;
 
       h1 {
@@ -40,6 +41,29 @@ export const Container = styled.div`
         align-items: center;
 
         .icon {
+          margin-right: 0.5rem;
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        background: var(--yellow2);
+        color: var(--black);
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 0.30rem;
+        font-size: 0.8rem;
+        font-weight: bold;
+
+        transition: all 0.3s;
+        
+        &:hover {
+          opacity: 0.8;
+        }
+
+        .icon {
+          font-size: 1.2rem;
           margin-right: 0.5rem;
         }
       }
