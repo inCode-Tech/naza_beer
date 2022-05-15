@@ -5,53 +5,39 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { Content } from './styles';
 
-interface PlayerModalProps {
-  showPasswordModal: boolean;
+interface DeletePlayerModalProps {
+  showDeletePlayerModal: boolean;
   onRequestClose: () => void;
-  type: string;
-  playerEditInfo: any;
+  playerDeleteInfo: any;
 }
 
 export function DeletePlayerModal({
-  showPasswordModal,
+  showDeletePlayerModal,
   onRequestClose,
-  type,
-  playerEditInfo,
-}: PlayerModalProps) {
+  playerDeleteInfo,
+}: DeletePlayerModalProps) {
   const [name, setName] = useState('');
-  const [position, setPosition] = useState('Linha');
 
   useEffect(() => {
-    if (Object.keys(playerEditInfo).length !== 0) {
-      setName(playerEditInfo.name);
-      setPosition(playerEditInfo.position);
+    if (Object.keys(playerDeleteInfo).length !== 0) {
+      setName(playerDeleteInfo.name);
     }
-  }, [playerEditInfo]);
+  }, [playerDeleteInfo]);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-
-    console.log(name);
-    console.log(position);
-
-    if (!name || !position) {
-      toast.error('Campo incompleto!');
-    } else {
-      toast.dismiss();
-      toast.success(type === 'new' ? 'Novo jogador cadastrado!' : 'Jogador editado!');
-      onRequestClose();
-    }
+  function deletePlayer(e: FormEvent) {
+    toast.dismiss();
+    toast.success('Jogador excluído!');
+    closeModal();
   }
 
   function closeModal() {
     setName('');
-    setPosition('Linha');
     onRequestClose();
   }
 
   return (
     <Modal
-      isOpen={showPasswordModal}
+      isOpen={showDeletePlayerModal}
       onRequestClose={closeModal}
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
@@ -59,37 +45,23 @@ export function DeletePlayerModal({
     >
       <Content>
         <header>
-          <h1>{type === "new" ? "Novo" : "Editar"} Jogador</h1>
+          <h1>Deseja excluir o jogador:</h1>
           <AiFillCloseCircle
             className="closeModalIcon"
             onClick={onRequestClose}
           />
         </header>
-        <form onSubmit={handleSubmit}>
-          <p>Nome:</p>
-          <input
-            type="text"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
-          <p>Posição:</p>
-          <select 
-            value={position}
-            onChange={event => setPosition(event.target.value)}
-          >
-            <option value="Linha">Linha</option>
-            <option value="Goleiro">Goleiro</option>
-          </select>
 
-          <div className="buttons-container">
-            <button type="button" className="cancel" onClick={onRequestClose}>
-              Cancelar
-            </button>
-            <button type="submit" className="submit">
-              {type === "new" ? "Adicionar" : "Editar"}
-            </button>
-          </div>
-        </form>
+        <p>{name}</p>
+
+        <div className="buttons-container">
+          <button type="button" className="cancel" onClick={closeModal}>
+            Cancelar
+          </button>
+          <button type="button" className="submit" onClick={deletePlayer}>
+            Excluir
+          </button>
+        </div>
       </Content>
     </Modal>
   );

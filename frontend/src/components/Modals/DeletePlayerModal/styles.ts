@@ -21,24 +21,16 @@ export const Content = styled.div`
       }
     }
   }
-  form {
-    margin-top: 4rem;
-    p {
-      margin-top: 1.5rem;
-    }
-    input, select {
-      width: 100%;
-      height: 2.2rem;
-      padding: 0 0.4rem;
-      border: 1px solid #ccc;
-      border-radius: 0.25rem;
-      background: white;
-    }
-    .buttons-container {
-      margin-top: 4rem;
-      display: flex;
-      justify-content: flex-end;
-    }
+
+  p {
+    font-size: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: flex-end;
+
     button {
       border: none;
       border-radius: 0.25rem;
@@ -50,7 +42,7 @@ export const Content = styled.div`
       &:hover {
         filter: opacity(0.8);
       }
-
+  
       &.cancel {
         background: white;
         border: 1px solid #ccc;
