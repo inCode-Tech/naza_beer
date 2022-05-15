@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDebouncedCallback } from 'use-debounce';
 
 import { Container } from "./styles";
 
@@ -21,47 +22,47 @@ const inititalPlayerVictories = [
   {
     id: 1,
     name: 'Carlos Kaiky',
-    victories: 37,
+    victories: 8,
   },
   {
     id: 2,
     name: 'Wesley Estevam',
-    victories: 31,
+    victories: 7,
   },
   {
     id: 3,
     name: 'Pedro Lucas',
-    victories: 27,
+    victories: 6,
   }
   ,
   {
     id: 4,
     name: 'Marcos Cauan',
-    victories: 23,
+    victories: 5,
   }
   ,
   {
     id: 5,
     name: 'Talison Ruan',
-    victories: 20,
+    victories: 4,
   }
   ,
   {
     id: 6,
     name: 'Filipe Mateus',
-    victories: 15,
+    victories: 3,
   }
   ,
   {
     id: 7,
     name: 'Wendell',
-    victories: 10,
+    victories: 2,
   }
   ,
   {
     id: 8,
     name: 'Matheus Amorim',
-    victories: 7,
+    victories: 1,
   }
   ,
   {
@@ -96,6 +97,31 @@ export function Victories() {
     } else if (type === "plus") {
       tempPlayerVictories[index].victories++;
     }
+
+    setPlayerVictories(tempPlayerVictories);
+
+    sortTableDelay();
+  }
+
+  const sortTableDelay = useDebouncedCallback(
+    () => {
+      sortTable();
+    },
+    1000
+  );
+
+  function sortTable() {
+    const tempPlayerVictories = [...playerVictories];
+
+    tempPlayerVictories.sort((a, b) => {
+      if (a.victories > b.victories) {
+        return -1;
+      }
+      if (a.victories < b.victories) {
+        return 1;
+      }
+      return 0;
+    });
 
     setPlayerVictories(tempPlayerVictories);
   }

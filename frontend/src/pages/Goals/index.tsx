@@ -7,6 +7,7 @@ import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../components/Footer";
 import { format, isSaturday, previousSaturday } from "date-fns";
 import { DayPickerModal } from "../../components/Modals/DayPickerModal";
+import { useDebouncedCallback } from "use-debounce";
 
 interface PlayerGoalsProps {
   id: number;
@@ -93,6 +94,31 @@ export function Goals() {
     } else if (type === "plus") {
       tempPlayerGoals[index].goals++;
     }
+
+    setPlayerGoals(tempPlayerGoals);
+
+    sortTableDelay();
+  }
+
+  const sortTableDelay = useDebouncedCallback(
+    () => {
+      sortTable();
+    },
+    1000
+  );
+
+  function sortTable() {
+    const tempPlayerGoals = [...playerGoals];
+
+    tempPlayerGoals.sort((a, b) => {
+      if (a.goals > b.goals) {
+        return -1;
+      }
+      if (a.goals < b.goals) {
+        return 1;
+      }
+      return 0;
+    });
 
     setPlayerGoals(tempPlayerGoals);
   }
