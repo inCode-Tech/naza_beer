@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken, transparentize } from 'polished';
 
 export const Container = styled.div`
   position: relative;
@@ -129,6 +130,15 @@ export const Container = styled.div`
 
       tbody tr:nth-child(odd) {
         background-color: var(--table-tr);
+      }
+
+      tbody tr.highlightTableRow {
+        animation: backgroundHighlightAnimate infinite 0.7s ;
+      }
+
+      @keyframes backgroundHighlightAnimate {
+        from {background: white}
+        to {background: #FAFF61}
       }
     }
   }

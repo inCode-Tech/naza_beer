@@ -81,12 +81,17 @@ export function Victories() {
   const [playerVictories, setPlayerVictories] = useState<PlayerVictoriesProps[]>([]);
   const [showDayPickerModal, setShowDayPickerModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
+  const [highlightTableRow, setHighlightTableRow] = useState<number[]>([]);
 
   useEffect(() => {
     setPlayerVictories(inititalPlayerVictories);
   }, []);
 
   function handleNumberOfVictories(id: number, type: "minus" | "plus") {
+    if (highlightTableRow.indexOf(id) === -1) {
+      setHighlightTableRow(oldState => [...oldState, id]);
+    }
+    console.log(highlightTableRow);
     const index = playerVictories.findIndex((playerVictorie) => {
       return playerVictorie.id === id;
     });
@@ -106,6 +111,9 @@ export function Victories() {
   const sortTableDelay = useDebouncedCallback(
     () => {
       sortTable();
+      setTimeout(() => {
+        setHighlightTableRow([]);
+      }, 1000);
     },
     1000
   );
@@ -174,7 +182,13 @@ export function Victories() {
           </thead>
           <tbody>
             {playerVictories.map((playerVictorie, index) => (
-              <tr key={playerVictorie.id}>
+              <tr
+                key={playerVictorie.id}
+                className={
+                  highlightTableRow.indexOf(playerVictorie.id) !== -1 ?
+                  'highlightTableRow' : ''
+                }
+              >
                 <td>{index+1}º</td>
                 <td>{playerVictorie.name}</td>
                 <td id="td-victories">{playerVictorie.victories}</td>

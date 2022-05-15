@@ -31,9 +31,6 @@ export function PlayerModal({
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(name);
-    console.log(position);
-
     if (!name || !position) {
       toast.error('Campo incompleto!');
     } else {
