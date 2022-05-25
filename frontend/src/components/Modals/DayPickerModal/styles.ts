@@ -22,14 +22,31 @@ export const Content = styled.div`
     }
   }
 
-  p {
-    font-size: 1.5rem;
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 2rem 0;
+
+    .my-selected:not([disabled]) { 
+      background: var(--black);
+      border-color: transparent;
+      color: var(--yellow1);
+    }
+    .my-selected:hover:not([disabled]) { 
+      background: var(--black);
+      border-color: transparent;
+      color: var(--yellow1);
+    }
   }
 
   .buttons-container {
     display: flex;
     justify-content: flex-end;
+
+    @media (max-width: 500px) {
+      flex-direction: column-reverse;
+    }
 
     button {
       border: none;
@@ -38,6 +55,11 @@ export const Content = styled.div`
       transition: filter 0.2s;
       &+button {
         margin-left: 1rem;
+
+        @media (max-width: 500px) {
+          margin-left: 0;
+          margin-bottom: 1rem;
+        }
       }
       &:hover {
         filter: opacity(0.8);
@@ -49,8 +71,8 @@ export const Content = styled.div`
         color: black;
       }
       &.submit {
-        background: #407ba7;
-        color: #fff;
+        background: var(--black);
+        color: var(--yellow2);
       }
     }
   }

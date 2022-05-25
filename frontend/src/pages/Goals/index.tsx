@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 
 import { Container } from "./styles";
 
-import { Navbar } from "../../components/Navbar";
-
-import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
+import { MdOutlineExpandMore, MdOutlineExpandLess, MdOutlineDateRange } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../components/Footer";
+import { format, isSaturday, previousSaturday } from "date-fns";
+import { DayPickerModal } from "../../components/Modals/DayPickerModal";
+import { useDebouncedCallback } from "use-debounce";
 
 interface PlayerGoalsProps {
   id: number;
@@ -68,8 +69,15 @@ const inititalPlayerGoals = [
   }
 ];
 
+function getInitialDay() {
+  const today = new Date();
+  return isSaturday(today) ? today : previousSaturday(today);
+}
+
 export function Goals() {
   const [playerGoals, setPlayerGoals] = useState<PlayerGoalsProps[]>([]);
+  const [showDayPickerModal, setShowDayPickerModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
     setPlayerGoals(inititalPlayerGoals);
@@ -88,16 +96,59 @@ export function Goals() {
     }
 
     setPlayerGoals(tempPlayerGoals);
+
+    sortTableDelay();
+  }
+
+  const sortTableDelay = useDebouncedCallback(
+    () => {
+      sortTable();
+    },
+    1000
+  );
+
+  function sortTable() {
+    const tempPlayerGoals = [...playerGoals];
+
+    tempPlayerGoals.sort((a, b) => {
+      if (a.goals > b.goals) {
+        return -1;
+      }
+      if (a.goals < b.goals) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setPlayerGoals(tempPlayerGoals);
+  }
+
+  function closeModal() {
+    setShowDayPickerModal(false);
   }
 
   return (
     <Container>
+      <DayPickerModal
+        showDayPickerModal={showDayPickerModal}
+        onRequestClose={closeModal}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+      />
       <div className="content">
         <header>
           <h1>
             <GiTrophy className="icon" />
             Gols
           </h1>
+
+          <button 
+            type="button"
+            onClick={() => setShowDayPickerModal(true)}
+          >
+            <MdOutlineDateRange className="icon" />
+            {selectedDay && format(selectedDay, 'dd/MM/y')}
+          </button>
         </header>
 
         <table>

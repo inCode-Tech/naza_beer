@@ -7,6 +7,7 @@ import { PlayerModal } from "../../components/Modals/PlayerModal";
 import { MdAdd, MdEdit, MdDeleteForever } from 'react-icons/md';
 import { GiSoccerKick } from 'react-icons/gi';
 import { Footer } from "../../components/Footer";
+import { DeletePlayerModal } from "../../components/Modals/DeletePlayerModal";
 
 interface PlayersProps {
   id: number;
@@ -70,35 +71,50 @@ const inititalPlayersInfo = [
 
 export function Players() {
   const [players, setPlayers] = useState<PlayersProps[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showPlayerModal, setShowPlayerModal] = useState(false);
+  const [showDeletePlayerModal, setShowDeletePlayerModal] = useState(false);
   const [typeModal, setTypeModal] = useState("new");
   const [playerEditInfo, setPlayerEditInfo] = useState<PlayersProps | {}>({});
+  const [playerDeleteInfo, setPlayerDeleteInfo] = useState<PlayersProps | {}>({});
 
   useEffect(() => {
     setPlayers(inititalPlayersInfo);
   }, []);
 
   function openModal() {
-    setShowModal(true);
+    setShowPlayerModal(true);
   }
-  function openEditModal(player: PlayersProps) {
+  function openPlayerModal(player: PlayersProps) {
     setTypeModal("edit");
     setPlayerEditInfo(player);
-    setShowModal(true);
+    setShowPlayerModal(true);
   }
-  function closeModal() {
+  function openDeleteModal(player: PlayersProps) {
+    setPlayerDeleteInfo(player);
+    setShowDeletePlayerModal(true);
+  }
+  function closePlayerModal() {
     setTypeModal("new");
     setPlayerEditInfo({});
-    setShowModal(false);
+    setShowPlayerModal(false);
+  }
+  function closeDeletePlayerModal() {
+    setPlayerDeleteInfo({});
+    setShowDeletePlayerModal(false);
   }
 
   return (
     <Container>
       <PlayerModal
-        showPasswordModal={showModal}
-        onRequestClose={closeModal}
+        showPlayerModal={showPlayerModal}
+        onRequestClose={closePlayerModal}
         type={typeModal}
         playerEditInfo={playerEditInfo}
+      />
+      <DeletePlayerModal
+        showDeletePlayerModal={showDeletePlayerModal}
+        onRequestClose={closeDeletePlayerModal}
+        playerDeleteInfo={playerDeleteInfo}
       />
 
       <div className="content">
@@ -143,13 +159,14 @@ export function Players() {
                   <button 
                     type="button" 
                     className="edit-button" 
-                    onClick={() => openEditModal(player)}
+                    onClick={() => openPlayerModal(player)}
                   >
                     <MdEdit className="icon" />
                   </button>
                   <button 
                     type="button" 
                     className="delete-button"
+                    onClick={() => openDeleteModal(player)}
                   >
                     <MdDeleteForever className="icon" />
                   </button>

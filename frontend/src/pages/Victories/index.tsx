@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+import { useDebouncedCallback } from 'use-debounce';
 
 import { Container } from "./styles";
 
-import { Navbar } from "../../components/Navbar";
-
 import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
+import { MdOutlineDateRange } from "react-icons/md";
+
 import { Footer } from "../../components/Footer";
+import { DayPickerModal } from "../../components/Modals/DayPickerModal";
+
+import { format, isSaturday, previousSaturday } from 'date-fns';
 
 interface PlayerVictoriesProps {
   id: number;
@@ -18,47 +22,47 @@ const inititalPlayerVictories = [
   {
     id: 1,
     name: 'Carlos Kaiky',
-    victories: 37,
+    victories: 8,
   },
   {
     id: 2,
     name: 'Wesley Estevam',
-    victories: 31,
+    victories: 7,
   },
   {
     id: 3,
     name: 'Pedro Lucas',
-    victories: 27,
+    victories: 6,
   }
   ,
   {
     id: 4,
     name: 'Marcos Cauan',
-    victories: 23,
+    victories: 5,
   }
   ,
   {
     id: 5,
     name: 'Talison Ruan',
-    victories: 20,
+    victories: 4,
   }
   ,
   {
     id: 6,
     name: 'Filipe Mateus',
-    victories: 15,
+    victories: 3,
   }
   ,
   {
     id: 7,
     name: 'Wendell',
-    victories: 10,
+    victories: 2,
   }
   ,
   {
     id: 8,
     name: 'Matheus Amorim',
-    victories: 7,
+    victories: 1,
   }
   ,
   {
@@ -68,14 +72,26 @@ const inititalPlayerVictories = [
   }
 ];
 
+function getInitialDay() {
+  const today = new Date();
+  return isSaturday(today) ? today : previousSaturday(today);
+}
+
 export function Victories() {
   const [playerVictories, setPlayerVictories] = useState<PlayerVictoriesProps[]>([]);
+  const [showDayPickerModal, setShowDayPickerModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
+  const [highlightTableRow, setHighlightTableRow] = useState<number[]>([]);
 
   useEffect(() => {
     setPlayerVictories(inititalPlayerVictories);
   }, []);
 
   function handleNumberOfVictories(id: number, type: "minus" | "plus") {
+    if (highlightTableRow.indexOf(id) === -1) {
+      setHighlightTableRow(oldState => [...oldState, id]);
+    }
+    console.log(highlightTableRow);
     const index = playerVictories.findIndex((playerVictorie) => {
       return playerVictorie.id === id;
     });
@@ -88,16 +104,62 @@ export function Victories() {
     }
 
     setPlayerVictories(tempPlayerVictories);
+
+    sortTableDelay();
+  }
+
+  const sortTableDelay = useDebouncedCallback(
+    () => {
+      sortTable();
+      setTimeout(() => {
+        setHighlightTableRow([]);
+      }, 1000);
+    },
+    1000
+  );
+
+  function sortTable() {
+    const tempPlayerVictories = [...playerVictories];
+
+    tempPlayerVictories.sort((a, b) => {
+      if (a.victories > b.victories) {
+        return -1;
+      }
+      if (a.victories < b.victories) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setPlayerVictories(tempPlayerVictories);
+  }
+
+  function closeModal() {
+    setShowDayPickerModal(false);
   }
 
   return (
     <Container>
+      <DayPickerModal
+        showDayPickerModal={showDayPickerModal}
+        onRequestClose={closeModal}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+      />
       <div className="content">
         <header>
           <h1>
             <GiTrophy className="icon" />
             Vitórias
           </h1>
+
+          <button 
+            type="button"
+            onClick={() => setShowDayPickerModal(true)}
+          >
+            <MdOutlineDateRange className="icon" />
+            {selectedDay && format(selectedDay, 'dd/MM/y')}
+          </button>
         </header>
 
         <table>
@@ -120,7 +182,13 @@ export function Victories() {
           </thead>
           <tbody>
             {playerVictories.map((playerVictorie, index) => (
-              <tr key={playerVictorie.id}>
+              <tr
+                key={playerVictorie.id}
+                className={
+                  highlightTableRow.indexOf(playerVictorie.id) !== -1 ?
+                  'highlightTableRow' : ''
+                }
+              >
                 <td>{index+1}º</td>
                 <td>{playerVictorie.name}</td>
                 <td id="td-victories">{playerVictorie.victories}</td>

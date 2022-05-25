@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
 import 'react-toastify/dist/ReactToastify.css';
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
+import '@szhsin/react-menu/dist/theme-dark.css';
+import 'react-day-picker/dist/style.css';
 
 export const GlobalStyles = createGlobalStyle`
   :root {
@@ -73,6 +77,28 @@ export const GlobalStyles = createGlobalStyle`
       padding-top: 5rem;
       width: 100vw;
       height: 100vh;
+    }
+  }
+  .ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 300ms;
+    .react-modal-content {
+      transform: scale(0);
+      transition: transform 300ms;
+    }
+  }
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+    transition: opacity 300ms;
+    .react-modal-content {
+      transform: scale(1);
+    }
+  }
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
+    transition: opacity 300ms;
+    .react-modal-content {
+      transform: scale(0);
     }
   }
 `;

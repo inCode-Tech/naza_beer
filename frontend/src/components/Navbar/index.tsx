@@ -1,17 +1,40 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import { useAuth } from "../../Context/AuthContext";
+import {
+  Menu,
+  MenuItem,
+  MenuButton,
+} from '@szhsin/react-menu';
 
 import { Container } from "./styles";
 
 import { HiHome } from 'react-icons/hi';
 import { GiSoccerKick, GiTrophy, GiSoccerBall } from 'react-icons/gi';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 export function Navbar() {
+  const { signOut } = useAuth();
   const [selected, setSelected] = useState("home");
 
   return (
     <Container>
-      <h1>Naza Beer</h1>
+      <header>
+        <h1>Naza Beer</h1>
+        <Menu
+          menuButton={
+            <MenuButton className="btn-logout">
+              <BsThreeDotsVertical />
+            </MenuButton>
+          }
+          theming="dark"
+          align="end"
+          transition
+          arrow
+        >
+          <MenuItem onClick={signOut}>Sair</MenuItem>
+        </Menu>
+      </header>
       <div className="separator"></div>
       <nav>
         <Link 

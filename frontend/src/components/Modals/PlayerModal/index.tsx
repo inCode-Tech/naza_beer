@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 import { Content } from './styles';
 
 interface PlayerModalProps {
-  showPasswordModal: boolean;
+  showPlayerModal: boolean;
   onRequestClose: () => void;
   type: string;
   playerEditInfo: any;
 }
 
 export function PlayerModal({
-  showPasswordModal,
+  showPlayerModal,
   onRequestClose,
   type,
   playerEditInfo,
@@ -30,9 +30,6 @@ export function PlayerModal({
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-
-    console.log(name);
-    console.log(position);
 
     if (!name || !position) {
       toast.error('Campo incompleto!');
@@ -51,7 +48,7 @@ export function PlayerModal({
 
   return (
     <Modal
-      isOpen={showPasswordModal}
+      isOpen={showPlayerModal}
       onRequestClose={closeModal}
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
