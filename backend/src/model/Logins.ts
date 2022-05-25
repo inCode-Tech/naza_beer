@@ -21,7 +21,6 @@ export const Logins = conexaoDB.define<TipoJogador>('login', {
         allowNull: false,
         type: DataTypes.STRING
     },
-
 },{
     tableName: 'login',
     timestamps: false
