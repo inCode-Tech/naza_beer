@@ -6,6 +6,7 @@ import { Container } from "./styles";
 import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
 import { GiTrophy } from 'react-icons/gi';
 import { MdOutlineDateRange } from "react-icons/md";
+import { VscFilePdf } from 'react-icons/vsc';
 
 import { Footer } from "../../components/Footer";
 import { DayPickerModal } from "../../components/Modals/DayPickerModal";
@@ -153,13 +154,23 @@ export function Victories() {
             Vitórias
           </h1>
 
-          <button 
-            type="button"
-            onClick={() => setShowDayPickerModal(true)}
-          >
-            <MdOutlineDateRange className="icon" />
-            {selectedDay && format(selectedDay, 'dd/MM/y')}
-          </button>
+          <div className="buttons-container">
+            <button 
+              type="button"
+              onClick={() => alert('GERANDO RELATÓRIO!')}
+              className="pdf-button"
+            >
+              <VscFilePdf className="icon" />
+              Gerar Relatóro
+            </button>
+            <button 
+              type="button"
+              onClick={() => setShowDayPickerModal(true)}
+            >
+              <MdOutlineDateRange className="icon" />
+              {selectedDay && format(selectedDay, 'dd/MM/y')}
+            </button>
+          </div>
         </header>
 
         <table>
