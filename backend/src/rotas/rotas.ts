@@ -10,6 +10,7 @@ const rota = Router();
 //ROTA DE LOGIN
 rota.post('/login', loginController.novologin);
 rota.post('/logar', loginController.logar)
+rota.post('/logout', loginController.logout)
 rota.get('/listarLogin', loginController.listarLogin);
 
 //ROTAS DA PÁGINA JOGADORES
@@ -27,6 +28,8 @@ rota.get('/vitorias', vitoriasController.listaVitorias);
 rota.put('/vitorias/:id', vitoriasController.editarVitorias);
 
 //ROTAS DE RANKING
-rota.get('/ranking', rankingController.ranking);
+rota.get('/rankingols', rankingController.rankingGols);
+rota.get('/rankingvitorias', rankingController.rankingVitorias);
+rota.get('/relatorio', rankingController.rankingPDF)
 
 export default rota;
