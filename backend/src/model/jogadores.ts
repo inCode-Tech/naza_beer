@@ -2,11 +2,11 @@ import { Model, DataTypes } from "sequelize";
 import { conexaoDB } from "../conexão/conexaoDB";
 
 export interface TipoJogador extends Model{
-    id: Number,
-    nome: String,
-    posicao: String,
-    gols: Number,
-    vitorias: Number
+    id: number,
+    nome: string,
+    posicao: string,
+    gols: number,
+    vitorias: number
 }
 
 export const Jogador = conexaoDB.define<TipoJogador>('jogador', {

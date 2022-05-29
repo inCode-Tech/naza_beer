@@ -27,7 +27,7 @@ export const logar = async ( req: Request, res: Response ) => {
     if( id == user && login == user && senha == user ) {
        res.status(500).json({message: 'Login inválido!'});
     }else{
-        const token = jwt.sign({ userId: id }, process.env.SECRET as string, { expiresIn: 300 });
+        const token = jwt.sign({ userId: id }, process.env.SECRET as string, { expiresIn: 60 * 24 });
         res.json({ auth: true, token })
     }
 

@@ -2,11 +2,11 @@ import { Model, DataTypes } from "sequelize";
 import { conexaoDB } from "../conexão/conexaoDB";
 
 export interface TipoDia extends Model{
-    id: Number,
-    id_jogador: Number,
-    pagou: Boolean,
-    gols: Number,
-    vitorias: Number,
+    id: number,
+    id_jogador: number,
+    pagou: number,
+    gols: number,
+    vitorias: number,
     dia_jogo: Date
 }
 
@@ -21,8 +21,8 @@ export const Dia = conexaoDB.define<TipoDia>('dia', {
         type: DataTypes.INTEGER,
     },
     pagou: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN
+        defaultValue: 0,
+        type: DataTypes.INTEGER
     },
     gols: {
         defaultValue: 0,
