@@ -10,8 +10,8 @@ const rota = Router();
 
 //ROTA DE LOGIN
 rota.post('/login', loginController.novologin);
-rota.post('/logar', loginController.logar)
-rota.post('/logout', loginController.logout)
+rota.post('/logar', loginController.logar);
+rota.post('/logout', loginController.logout);
 rota.get('/listarLogin', loginController.listarLogin);
 
 //ROTAS DA PÁGINA JOGADORES

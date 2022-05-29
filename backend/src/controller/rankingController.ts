@@ -20,8 +20,9 @@ export const rankingVitorias = async ( req:Request, res:Response ) => {
 export const rankingPdfGols = async ( req:Request, res:Response ) => {
     let browser = await puppeteer.launch({ headless: true });
     let page = await browser.newPage();
+    let dataJogo = req.body.dataJogo;
 
-    let url = "https://naza-beer.vercel.app/relatorio/gols";
+    let url = `https://naza-beer.vercel.app/relatorio/gols?${dataJogo}`;
 
     await page.goto( url, {
         waitUntil: 'networkidle0'
