@@ -11,4 +11,4 @@ export const conexaoDB = new Sequelize(
         dialect: 'postgres',
         port: parseInt(process.env.PG_PORT as string)
     }
-)
+);
