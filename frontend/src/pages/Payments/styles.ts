@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { darken, transparentize } from 'polished';
 
 export const Container = styled.div`
   position: relative;
@@ -8,26 +7,8 @@ export const Container = styled.div`
     padding-left: 15rem; // Navbar space
     width: 100%;
 
-    #span-victories, #victories-number-hidden {
-      display: none;
-    }
     @media (max-width: 630px) {
       padding-left: 0;
-
-      #th-victories, #td-victories, #span-actions {
-        display: none;
-      }
-      #span-victories, #victories-number-hidden {
-        display: inherit;
-      }
-      #victories-number-hidden {
-        @media (max-width: 630px) {
-          width: 2rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
     }
 
     header {
@@ -46,39 +27,26 @@ export const Container = styled.div`
         }
       }
 
-      .buttons-container {
+      button {
         display: flex;
+        align-items: center;
+        background: var(--yellow2);
+        color: var(--black);
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 0.30rem;
+        font-size: 0.8rem;
+        font-weight: bold;
 
-        button {
-          display: flex;
-          align-items: center;
-          background: var(--yellow2);
-          color: var(--black);
-          border: none;
-          padding: 0.6rem 1rem;
-          border-radius: 0.30rem;
-          font-size: 0.8rem;
-          font-weight: bold;
-  
-          transition: all 0.3s;
-          
-          &:hover {
-            opacity: 0.8;
-          }
+        transition: all 0.3s;
+        
+        &:hover {
+          opacity: 0.8;
+        }
 
-          &.pdf-button {
-            background: var(--black);
-            color: #FFFFFF;
-          }
-  
-          .icon {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-          }
-
-          & + button {
-            margin-left: 0.5rem;
-          }
+        .icon {
+          font-size: 1.2rem;
+          margin-right: 0.5rem;
         }
       }
     }
@@ -109,11 +77,11 @@ export const Container = styled.div`
         border: none;
         border-radius: 0.30rem;
         font-size: 1.3rem;
-        padding: 0.2rem;
+        padding: 0.2rem 1rem;
         color: white;
 
         &:first-child {
-          margin-right: 0.8rem;
+          margin-right: 0.3rem;
 
           @media (max-width: 630px) {
             margin-right: 0;
@@ -122,13 +90,16 @@ export const Container = styled.div`
 
         transition: all 0.3s;
 
-        &.up-button {
+        &.status-button {
           background: var(--black);
-          color: var(--yellow1);
+          color: var(--yellow2);
+
+          transition: transform 0.3s;
         }
-        &.down-button {
-          background: var(--black);
-          color: var(--yellow1);
+
+        &.false {
+          opacity: 0.4;
+          transform: rotateY(-180deg) rotateX(-180deg);
         }
 
         &:hover {

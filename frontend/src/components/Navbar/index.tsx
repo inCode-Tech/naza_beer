@@ -6,6 +6,7 @@ import {
   MenuItem,
   MenuButton,
 } from '@szhsin/react-menu';
+import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 
 import { Container } from "./styles";
 
@@ -68,6 +69,14 @@ export function Navbar() {
         >
           <GiSoccerBall className="icon" />
           Gols
+        </Link>
+        <Link 
+          to="/pagamentos" 
+          onClick={() => setSelected("payments")}
+          className={selected === "payments" ? "selected" : ""}
+        >
+          <RiMoneyDollarCircleLine className="icon" />
+          Pagamentos
         </Link>
       </nav>
     </Container>

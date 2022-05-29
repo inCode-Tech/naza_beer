@@ -5,6 +5,7 @@ import { Home } from '../pages/Home';
 import { Players } from '../pages/Players';
 import { Victories } from '../pages/Victories';
 import { Goals } from '../pages/Goals';
+import { Payments } from '../pages/Payments';
 
 export function PrivateRoutes() {
   return (
@@ -15,6 +16,7 @@ export function PrivateRoutes() {
         <Route path="/jogadores" element={<Players />} />
         <Route path="/vitorias" element={<Victories />} />
         <Route path="/gols" element={<Goals />} />
+        <Route path="/pagamentos" element={<Payments />} />
 
         <Route path="*" element={<Navigate to="/inicio" />} />
       </Routes>

@@ -8,6 +8,7 @@ import { Footer } from "../../components/Footer";
 import { format, isSaturday, previousSaturday } from "date-fns";
 import { DayPickerModal } from "../../components/Modals/DayPickerModal";
 import { useDebouncedCallback } from "use-debounce";
+import { VscFilePdf } from 'react-icons/vsc';
 
 interface PlayerGoalsProps {
   id: number;
@@ -142,13 +143,23 @@ export function Goals() {
             Gols
           </h1>
 
-          <button 
-            type="button"
-            onClick={() => setShowDayPickerModal(true)}
-          >
-            <MdOutlineDateRange className="icon" />
-            {selectedDay && format(selectedDay, 'dd/MM/y')}
-          </button>
+          <div className="buttons-container">
+            <button 
+              type="button"
+              onClick={() => alert('GERANDO RELATÓRIO!')}
+              className="pdf-button"
+            >
+              <VscFilePdf className="icon" />
+              Gerar Relatóro
+            </button>
+            <button 
+              type="button"
+              onClick={() => setShowDayPickerModal(true)}
+            >
+              <MdOutlineDateRange className="icon" />
+              {selectedDay && format(selectedDay, 'dd/MM/y')}
+            </button>
+          </div>
         </header>
 
         <table>
