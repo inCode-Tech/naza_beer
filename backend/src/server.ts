@@ -7,7 +7,7 @@ import rota from "../src/rotas/rotas"
 dotenv.config();
 
 const server = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 server.use(cors());
 
