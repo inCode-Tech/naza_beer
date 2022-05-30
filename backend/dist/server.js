@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const rotas_1 = __importDefault(require("../src/rotas/rotas"));
+const rotas_1 = __importDefault(require("../src/rotas/rotas.js"));
 dotenv_1.default.config();
 const server = (0, express_1.default)();
 const port = process.env.PORT || 5000;
