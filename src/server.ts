@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import path from "path"
 import cors from "cors";
 import dotenv from "dotenv";
-import rota from "../src/rotas/rotas"
+import rota from "./rotas/rotas.ts";
 
 dotenv.config();
 
