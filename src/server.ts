@@ -16,12 +16,6 @@ server.use(express.urlencoded({ extended: false }));
 
 server.use(rota);
 
-server.use((req: Request, res: Response) => {
-    res.status(404);
-    res.json({error: 'Pagina não encontrada!!!'});
-    
-});
-
 server.listen(port, () => {
     console.log('Servidor rodando na porta ' + port)
 });
