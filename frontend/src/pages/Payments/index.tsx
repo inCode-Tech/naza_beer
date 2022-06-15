@@ -10,66 +10,13 @@ import { Footer } from "../../components/Footer";
 import { DayPickerModal } from "../../components/Modals/DayPickerModal";
 
 import { format, isSaturday, previousSaturday } from 'date-fns';
+import { api } from "../../services/api";
 
 interface PlayerStatusProps {
   id: number;
-  name: string;
-  status: number;
+  nome: string;
+  pagou: 0 | 1;
 }
-
-const inititalPlayerStatus = [
-  {
-    id: 1,
-    name: 'Carlos Kaiky',
-    status: 1,
-  },
-  {
-    id: 2,
-    name: 'Wesley Estevam',
-    status: 0,
-  },
-  {
-    id: 3,
-    name: 'Pedro Lucas',
-    status: 1,
-  }
-  ,
-  {
-    id: 4,
-    name: 'Marcos Cauan',
-    status: 1,
-  }
-  ,
-  {
-    id: 5,
-    name: 'Talison Ruan',
-    status: 0,
-  }
-  ,
-  {
-    id: 6,
-    name: 'Filipe Mateus',
-    status: 1,
-  }
-  ,
-  {
-    id: 7,
-    name: 'Wendell',
-    status: 1,
-  }
-  ,
-  {
-    id: 8,
-    name: 'Matheus Amorim',
-    status: 0,
-  }
-  ,
-  {
-    id: 9,
-    name: 'Davi Marinho',
-    status: 0,
-  }
-];
 
 function getInitialDay() {
   const today = new Date();
@@ -82,8 +29,24 @@ export function Payments() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
-    setPlayerStatus(inititalPlayerStatus);
-  }, []);
+    api.get('/jogadores').then(responsePlayers => {
+      if (selectedDay !== undefined) {
+        api.get(`/pagamento/${format(selectedDay, 'yyyy-MM-dd')}`).then(responsePayments => {
+          let playersList = responsePlayers.data;
+          const playerPayments = responsePayments.data;
+          playersList.forEach((player: any) => {
+            player.pagou = 0;
+            playerPayments.forEach((playerPayment: any) => {
+              if (player.id === playerPayment.id_jogador) {
+                player.pagou = playerPayment.pagou;
+              }
+            });
+          });
+          setPlayerStatus(playersList);
+        });
+      }
+    });
+  }, [selectedDay]);
 
   function handlePlayerStatus(id: number) {
     const index = playerStatus.findIndex((player) => {
@@ -91,10 +54,19 @@ export function Payments() {
     });
     const tempPlayerStatus = [...playerStatus];
 
-    if(tempPlayerStatus[index].status === 0) {
-      tempPlayerStatus[index].status = 1;
+    const params = new URLSearchParams();
+    if (selectedDay !== undefined) {
+      params.append('dia_jogo', format(selectedDay, 'yyyy-MM-dd'));
+    }
+
+    if(tempPlayerStatus[index].pagou === 0) {
+      tempPlayerStatus[index].pagou = 1;
+      params.append('pagou', '1');
+      api.put(`/pagamento/${id}`, params);
     } else {
-      tempPlayerStatus[index].status = 0;
+      tempPlayerStatus[index].pagou = 0;
+      params.append('pagou', '0');
+      api.put(`/pagamento/${id}`, params);
     }
 
     setPlayerStatus(tempPlayerStatus);
@@ -148,11 +120,11 @@ export function Payments() {
                 key={playerStts.id}
               >
                 <td>{index+1}º</td>
-                <td>{playerStts.name}</td>
+                <td>{playerStts.nome}</td>
                 <td className="td-buttons">
                   <button
                     type="button"
-                    className={playerStts.status === 0 ? "status-button false" : "status-button true"}
+                    className={playerStts.pagou === 0 ? "status-button false" : "status-button true"}
                     onClick={() => handlePlayerStatus(playerStts.id)}
                   >
                     <BiLike className="icon" />
