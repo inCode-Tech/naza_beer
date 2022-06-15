@@ -31,7 +31,7 @@ rota.get('/vitoriasDia/:data', vitoriasController.listarVitoriasDia);
 rota.put('/vitorias/:id', vitoriasController.editarVitorias);
 
 //ROTAS DE PAGAMENTO
-rota.get('/pagamento', pagouController.pagamento);
+rota.get('/pagamento/:data', pagouController.listarPagamentoDia);
 rota.put('/pagamento/:id', pagouController.NovoPagamento);
 
 //ROTAS DE RANKING
