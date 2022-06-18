@@ -16,7 +16,7 @@ export const listarGolsDia = async ( req: Request, res: Response ) => {
     let { data } = req.params;
 
     let listaDia = await conexaoDB.query(`
-        SELECT nome, posicao, dia.gols, dia_jogo 
+        SELECT id_jogador, nome, posicao, dia.gols, dia_jogo 
         FROM dia 
         INNER JOIN Jogador 
         ON dia.id_jogador = jogador.id

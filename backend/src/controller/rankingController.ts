@@ -20,9 +20,9 @@ export const rankingVitorias = async ( req:Request, res:Response ) => {
 export const rankingPdfGols = async ( req:Request, res:Response ) => {
     let browser = await puppeteer.launch({ headless: true });
     let page = await browser.newPage();
-    let dataJogo = req.body.dataJogo;
+    let data = req.query.data;
 
-    let url = `https://naza-beer.vercel.app/relatorio/gols?${dataJogo}`;
+    let url = `http://localhost:3000/relatorio/gols?data=${data}`;
 
     await page.goto( url, {
         waitUntil: 'networkidle0'
@@ -38,14 +38,17 @@ export const rankingPdfGols = async ( req:Request, res:Response ) => {
 
     res.contentType("application/pdf");
 
-    res.send(pdf)
+    res.send(pdf);
 }
 
 export const rankingPdfVitorias = async ( req:Request, res:Response ) => {
     let browser = await puppeteer.launch({ headless: true });
     let page = await browser.newPage();
+    let data = req.query.data;
 
-    let url = "https://naza-beer.vercel.app/relatorio/vitorias";
+    let url = `http://localhost:3000/relatorio/vitorias?data=${data}`;
+
+    console.log(url);
 
     await page.goto( url, {
         waitUntil: 'networkidle0'
@@ -61,5 +64,5 @@ export const rankingPdfVitorias = async ( req:Request, res:Response ) => {
 
     res.contentType("application/pdf");
 
-    res.send(pdf)
+    res.send(pdf);
 }
