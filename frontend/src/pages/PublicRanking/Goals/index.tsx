@@ -6,66 +6,13 @@ import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../../components/Footer";
 import { MdOutlineDateRange } from "react-icons/md";
 import { format, isSaturday, previousSaturday } from "date-fns";
+import { api } from "../../../services/api";
 
 interface PlayersProps {
   id: number;
-  name: string;
-  goals: number;
+  nome: string;
+  gols: number;
 }
-
-const inititalPlayersInfo = [
-  {
-    id: 1,
-    name: 'Carlos Kaiky',
-    goals: 17,
-  },
-  {
-    id: 2,
-    name: 'Wesley Estevam',
-    goals: 16,
-  },
-  {
-    id: 3,
-    name: 'Pedro Lucas',
-    goals: 15,
-  }
-  ,
-  {
-    id: 4,
-    name: 'Marcos Cauan',
-    goals: 13,
-  }
-  ,
-  {
-    id: 5,
-    name: 'Talison Ruan',
-    goals: 9,
-  }
-  ,
-  {
-    id: 6,
-    name: 'Filipe Mateus',
-    goals: 7,
-  }
-  ,
-  {
-    id: 7,
-    name: 'Wendell',
-    goals: 6,
-  }
-  ,
-  {
-    id: 8,
-    name: 'Matheus Amorim',
-    goals: 3,
-  }
-  ,
-  {
-    id: 9,
-    name: 'Davi Marinho',
-    goals: 1,
-  }
-];
 
 function getInitialDay() {
   const today = new Date();
@@ -77,8 +24,42 @@ export function PublicRankingGoals() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
-    setPlayers(inititalPlayersInfo);
+    const urlParams = new URLSearchParams(window.location.search);
+    const date = urlParams.get('data');
+    if (typeof(date) === 'string') {
+      setSelectedDay(new Date(date));
+    }
   }, []);
+
+  useEffect(() => {
+    api.get('/jogadores').then(responsePlayers => {
+      if (selectedDay !== undefined) {
+        api.get(`/golsDia/${format(selectedDay, 'yyyy-MM-dd')}`).then(responseGoals => {
+          let playersList = responsePlayers.data;
+          const playerGoals = responseGoals.data;
+          playersList.forEach((player: any) => {
+            player.gols = 0;
+            playerGoals.forEach((playerGoal: any) => {
+              if (player.id === playerGoal.id_jogador) {
+                player.gols = playerGoal.gols;
+              }
+            });
+          });
+
+          playersList.sort((a: any, b: any) => {
+            if (a.gols > b.gols) {
+              return -1;
+            }
+            if (a.gols < b.gols) {
+              return 1;
+            }
+            return 0;
+          });
+          setPlayers(playersList);
+        });
+      }
+    });
+  }, [selectedDay]);
 
   return (
     <Container>
@@ -112,11 +93,11 @@ export function PublicRankingGoals() {
             </tr>
           </thead>
           <tbody>
-            {players.map(player => (
+            {players.map((player, index) => (
               <tr key={player.id}>
-                <td>{player.id}</td>
-                <td>{player.name}</td>
-                <td className="td-goals">{player.goals}</td>
+                <td>{index + 1}º</td>
+                <td>{player.nome}</td>
+                <td className="td-goals">{player.gols}</td>
               </tr>
             ))}
           </tbody>

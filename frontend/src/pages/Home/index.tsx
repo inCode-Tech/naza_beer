@@ -35,11 +35,9 @@ export function Home() {
     });
 
     api.get('/rankingvitorias').then(response => {
-      console.log(response);
       setRankingVitories(response.data);
     });
     api.get('/rankingols').then(response => {
-      console.log(response);
       setRankingGoals(response.data);
     });
   }, []);

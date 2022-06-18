@@ -119,7 +119,7 @@ export function Payments() {
               <tr
                 key={playerStts.id}
               >
-                <td>{index+1}º</td>
+                <td>{index+1}</td>
                 <td>{playerStts.nome}</td>
                 <td className="td-buttons">
                   <button

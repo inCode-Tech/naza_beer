@@ -1,11 +1,13 @@
 import { Container } from './styles';
 
 export function Footer() {
-  const teste = new Date().getFullYear();
+  const date = new Date().getFullYear();
 
   return (
     <Container>
-      Desenvolvido por: <b> InCode© </b> - {teste}
+      <b>Equipe de desenvolvimento</b>
+      <p>Wesley Estevam Do Monte | Davi Martins Aguiar</p>
+      <p>Gean Cezar Moreira da Silva | Soter Caio Garcias Castro</p>
     </Container>
   );
 }

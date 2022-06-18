@@ -106,9 +106,9 @@ export function Players() {
             </tr>
           </thead>
           <tbody>
-            {players.map(player => (
+            {players.map((player, index) => (
               <tr key={player.id}>
-                <td>{player.id}</td>
+                <td>{index + 1}</td>
                 <td>{player.nome}</td>
                 <td>{player.posicao}</td>
                 <td className="td-buttons">

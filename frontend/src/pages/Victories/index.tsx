@@ -14,6 +14,8 @@ import { DayPickerModal } from "../../components/Modals/DayPickerModal";
 import { format, isSaturday, previousSaturday } from 'date-fns';
 import { api } from "../../services/api";
 
+import fileDownload from 'js-file-download';
+
 interface PlayerVictoriesProps {
   id: number;
   nome: string;
@@ -30,6 +32,7 @@ export function Victories() {
   const [showDayPickerModal, setShowDayPickerModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
   const [highlightTableRow, setHighlightTableRow] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     api.get('/jogadores').then(responsePlayers => {
@@ -106,6 +109,18 @@ export function Victories() {
     1000
   );
 
+  function generateReport() {
+    setIsLoading(true);
+    if (selectedDay !== undefined) {
+      api.get(`/relatorioVitorias?data=${format(selectedDay, 'y/MM/dd')}`, {
+        responseType: 'blob',
+      }).then(res => {
+        fileDownload(res.data, `vitorias-${format(selectedDay, 'y/MM/dd')}.pdf`);
+        setIsLoading(false);
+      });
+    }
+  }
+
   function sortTable() {
     const tempPlayerVictories = [...playerVictories];
 
@@ -144,11 +159,15 @@ export function Victories() {
           <div className="buttons-container">
             <button 
               type="button"
-              onClick={() => alert('GERANDO RELATÓRIO!')}
+              onClick={() => generateReport()}
               className="pdf-button"
             >
               <VscFilePdf className="icon" />
-              Gerar Relatóro
+              {isLoading ? (
+                <span>Carregando...</span>
+              ) : (
+                <span>Gerar Relatóro</span>
+              )}
             </button>
             <button 
               type="button"

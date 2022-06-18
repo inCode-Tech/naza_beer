@@ -6,66 +6,13 @@ import { GiTrophy } from 'react-icons/gi';
 import { Footer } from "../../../components/Footer";
 import { MdOutlineDateRange } from "react-icons/md";
 import { format, isSaturday, previousSaturday } from "date-fns";
+import { api } from "../../../services/api";
 
 interface PlayersProps {
   id: number;
-  name: string;
-  victories: number;
+  nome: string;
+  vitorias: number;
 }
-
-const inititalPlayersInfo = [
-  {
-    id: 1,
-    name: 'Carlos Kaiky',
-    victories: 17,
-  },
-  {
-    id: 2,
-    name: 'Wesley Estevam',
-    victories: 16,
-  },
-  {
-    id: 3,
-    name: 'Pedro Lucas',
-    victories: 15,
-  }
-  ,
-  {
-    id: 4,
-    name: 'Marcos Cauan',
-    victories: 13,
-  }
-  ,
-  {
-    id: 5,
-    name: 'Talison Ruan',
-    victories: 9,
-  }
-  ,
-  {
-    id: 6,
-    name: 'Filipe Mateus',
-    victories: 7,
-  }
-  ,
-  {
-    id: 7,
-    name: 'Wendell',
-    victories: 6,
-  }
-  ,
-  {
-    id: 8,
-    name: 'Matheus Amorim',
-    victories: 3,
-  }
-  ,
-  {
-    id: 9,
-    name: 'Davi Marinho',
-    victories: 1,
-  }
-];
 
 function getInitialDay() {
   const today = new Date();
@@ -77,8 +24,42 @@ export function PublicRankingVictories() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(getInitialDay());
 
   useEffect(() => {
-    setPlayers(inititalPlayersInfo);
+    const urlParams = new URLSearchParams(window.location.search);
+    const date = urlParams.get('data');
+    if (typeof(date) === 'string') {
+      setSelectedDay(new Date(date));
+    }
   }, []);
+
+  useEffect(() => {
+    api.get('/jogadores').then(responsePlayers => {
+      if (selectedDay !== undefined) {
+        api.get(`/vitoriasDia/${format(selectedDay, 'yyyy-MM-dd')}`).then(responseVictories => {
+          let playersList = responsePlayers.data;
+          const playerVictories = responseVictories.data;
+          playersList.forEach((player: any) => {
+            player.vitorias = 0;
+            playerVictories.forEach((playerVictorie: any) => {
+              if (player.id === playerVictorie.id_jogador) {
+                player.vitorias = playerVictorie.vitorias;
+              }
+            });
+          });
+
+          playersList.sort((a: any, b: any) => {
+            if (a.vitorias > b.vitorias) {
+              return -1;
+            }
+            if (a.vitorias < b.vitorias) {
+              return 1;
+            }
+            return 0;
+          });
+          setPlayers(playersList);
+        });
+      }
+    });
+  }, [selectedDay]);
 
   return (
     <Container>
@@ -112,11 +93,11 @@ export function PublicRankingVictories() {
             </tr>
           </thead>
           <tbody>
-            {players.map(player => (
+            {players.map((player, index) => (
               <tr key={player.id}>
-                <td>{player.id}</td>
-                <td>{player.name}</td>
-                <td className="td-victories">{player.victories}</td>
+                <td>{index + 1}º</td>
+                <td>{player.nome}</td>
+                <td className="td-victories">{player.vitorias}</td>
               </tr>
             ))}
           </tbody>
