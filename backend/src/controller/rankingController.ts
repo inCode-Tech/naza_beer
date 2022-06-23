@@ -22,7 +22,7 @@ export const rankingPdfGols = async ( req:Request, res:Response ) => {
     let page = await browser.newPage();
     let data = req.query.data;
 
-    let url = `http://localhost:3000/relatorio/gols?data=${data}`;
+    let url = `https://naza-beer.vercel.app/relatorio/gols?data=${data}`;
 
     await page.goto( url, {
         waitUntil: 'networkidle0'
@@ -46,9 +46,7 @@ export const rankingPdfVitorias = async ( req:Request, res:Response ) => {
     let page = await browser.newPage();
     let data = req.query.data;
 
-    let url = `http://localhost:3000/relatorio/vitorias?data=${data}`;
-
-    console.log(url);
+    let url = `https://naza-beer.vercel.app/relatorio/vitorias?data=${data}`;
 
     await page.goto( url, {
         waitUntil: 'networkidle0'
