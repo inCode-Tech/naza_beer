@@ -16,6 +16,10 @@ server.use(express.urlencoded({ extended: false }));
 
 server.use(rota);
 
+setInterval(() => {
+    server.get('https://nazabeer.herokuapp.com');
+}, 300000); // a cada 5 minutos (300000)
+
 server.listen(port, () => {
     console.log('Servidor rodando na porta ' + port)
 });
