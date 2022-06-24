@@ -19,7 +19,8 @@ export const rankingVitorias = async ( req:Request, res:Response ) => {
 
 export const rankingPdfGols = async ( req:Request, res:Response ) => {
     const browser = await puppeteer.launch({
-        args : [
+        headless: true,
+        args: [
           '--no-sandbox',
           '--disable-setuid-sandbox'
         ]
@@ -48,7 +49,8 @@ export const rankingPdfGols = async ( req:Request, res:Response ) => {
 
 export const rankingPdfVitorias = async ( req:Request, res:Response ) => {
     const browser = await puppeteer.launch({
-        args : [
+        headless: true,
+        args: [
           '--no-sandbox',
           '--disable-setuid-sandbox'
         ]
