@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { conexaoDB } from "../conexão/conexaoDB";
 import { Dia } from "../model/dia";
 import { Jogador } from "../model/jogadores";
 
@@ -46,12 +47,11 @@ export const editarJogador = async ( req: Request, res: Response ) => {
 
 export const excluirJogador = async ( req: Request, res: Response ) => {
         let id = req.params;
-        
-        await Dia.destroy({
-            where: {
-                id_jogador: id
-            }
-        });
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
+        let listaDia = await conexaoDB.query(`
+            DELETE FROM dia WHERE id_jogador = ${id}
+        `);
+
 
         await Jogador.destroy({
             where: id
