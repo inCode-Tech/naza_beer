@@ -46,15 +46,18 @@ export const editarJogador = async ( req: Request, res: Response ) => {
 }
 
 export const excluirJogador = async ( req: Request, res: Response ) => {
-        let id = req.params;
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
-        let listaDia = await conexaoDB.query(`
-            DELETE FROM dia WHERE id_jogador = ${id}
-        `);
+        let { id } = req.params;
 
+        await Dia.destroy({
+            where: {
+                id_jogador: id
+            }
+        });
 
         await Jogador.destroy({
-            where: id
+            where: {
+                id
+            }
         });
         
         res.json("Jogador excluido com sucesso")
