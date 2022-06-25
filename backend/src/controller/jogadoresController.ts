@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Dia } from "../model/dia";
 import { Jogador } from "../model/jogadores";
 
 export const listarjogadores = async( req: Request, res: Response ) => {
@@ -46,7 +47,13 @@ export const editarJogador = async ( req: Request, res: Response ) => {
 export const excluirJogador = async ( req: Request, res: Response ) => {
         let id = req.params;
         
-        let deletarJogador = await Jogador.destroy({
+        await Dia.destroy({
+            where: {
+                id_jogador: id
+            }
+        });
+
+        await Jogador.destroy({
             where: id
         });
         
